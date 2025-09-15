@@ -1,0 +1,77 @@
+version: '3'
+services:
+  carrito-service:
+    container_name: carrito-service
+    image: mysql:8.0.33
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: carrito-service
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - 3312:3306   # puerto externo 3307 -> interno 3306
+
+  productos-service:
+    container_name: productos-service
+    image: mysql:8.0.33
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: productos-service
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - 3308:3306   # puerto externo 3308 -> interno 3306
+
+  stock-service:
+    container_name: stock-service
+    image: mysql:8.0.33
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: stock-service
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+    ports:
+      - 3309:3306   # puerto externo 3309 -> interno 3306
+
+  ### MySQL database for Keycloak
+  db-keycloak:
+    container_name: db-keycloak
+    image: mysql:8.0.33
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: db_keycloak
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - 3311:3306   # puerto externo 3311 -> interno 3306
+    expose:
+      - 3306
+
+### Keycloak
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:21.0.2
+    command: ["start-dev"]          # modo dev (útil para pruebas locales)
+    restart: unless-stopped
+    depends_on:
+      - db-keycloak
+    ports:
+      - "8181:8181"
+    environment:
+      # Base de datos (MySQL)
+      KC_DB: mysql
+      KC_DB_URL: ${KC_DB_URL}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+
+      # Admin user
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+
+      # Puerto HTTP interno de Keycloak
+      KC_HTTP_PORT: 8181

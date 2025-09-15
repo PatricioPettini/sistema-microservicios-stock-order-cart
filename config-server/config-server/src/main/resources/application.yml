@@ -1,0 +1,15 @@
+server:
+  port: 8093
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/PatricioPettini/config-server-microservicios.git
+          default-label: master
+          search-paths: config-data
+          username: ${GIT_USER}
+          password: ${GIT_TOKEN}

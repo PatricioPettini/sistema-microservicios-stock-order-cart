@@ -1,0 +1,22 @@
+package com.patomicroservicios.stock_service.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductGetDTO {
+    private Long productId;
+    private String name;
+    private BrandGetDTO brand;
+    private CategoryGetDTO category;
+    private BigDecimal unitPrice;
+    private String state;
+    private boolean fallback;
+}

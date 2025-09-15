@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.todocodeacademy.eureka_server.EurekaServerApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.97 s -- in com.todocodeacademy.eureka_server.EurekaServerApplicationTests
