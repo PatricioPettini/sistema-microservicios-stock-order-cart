@@ -22,7 +22,6 @@ public class LoginController {
 
     @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("permitAll()")
-
     public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
         TokenResponse tokens = authService.login(request);
         return ResponseEntity.ok(tokens);

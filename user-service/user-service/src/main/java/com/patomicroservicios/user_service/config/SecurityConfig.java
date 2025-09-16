@@ -30,10 +30,19 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login").permitAll()
-                        .requestMatchers("/api/auth/register").permitAll()
-                        .requestMatchers("/api/auth/logout").permitAll()
-                        .requestMatchers("/api/auth/refresh").permitAll()
+                        // ✅ Permitir swagger sin autenticación
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/v3/api-docs/**",
+                                "/v2/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/api/auth/login",
+                                "/api/auth/logout",
+                                "/api/auth/register",
+                                "/api/auth/refresh"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

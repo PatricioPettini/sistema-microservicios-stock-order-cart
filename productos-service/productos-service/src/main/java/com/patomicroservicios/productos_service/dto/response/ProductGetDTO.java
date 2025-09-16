@@ -13,8 +13,8 @@ import java.math.BigDecimal;
 public class ProductGetDTO {
     private Long productId;
     private String name;
-    private BrandGetDTO brand;
-    private CategoryGetDTO category;
+    private String brand;
+    private String category;
     private BigDecimal unitPrice;
     private Product.ProductState state;
     private boolean fallback;

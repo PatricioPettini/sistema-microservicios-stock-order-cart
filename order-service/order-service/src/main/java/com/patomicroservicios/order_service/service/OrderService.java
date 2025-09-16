@@ -6,6 +6,7 @@ import com.patomicroservicios.order_service.dto.response.OrderGetDTO;
 import com.patomicroservicios.order_service.dto.response.ProductDTO;
 import com.patomicroservicios.order_service.exceptions.CartNotFoundException;
 import com.patomicroservicios.order_service.exceptions.OrderAlreadyCanceled;
+import com.patomicroservicios.order_service.exceptions.OrderAlreadyPaid;
 import com.patomicroservicios.order_service.exceptions.OrderNotFoundException;
 import com.patomicroservicios.order_service.model.Order;
 import com.patomicroservicios.order_service.model.Product;
@@ -105,6 +106,7 @@ public class OrderService implements IOrderService{
         return Product.builder()
                 .productId(p.getProductId())
                 .name(p.getName())
+                .brand(p.getBrand())
                 .unitPrice(unitPrice)
                 .quantity(quantity)
                 .subtotalPrice(unitPrice.multiply(BigDecimal.valueOf(quantity)))
@@ -124,6 +126,7 @@ public class OrderService implements IOrderService{
 
         //validate state
         if(order.getStatus().equals(Order.OrderStatus.CANCELED)) throw new OrderAlreadyCanceled(orderId);
+        if(order.getStatus().equals(Order.OrderStatus.PAID)) throw new OrderAlreadyPaid(orderId);
 
         updateOrderStatus(orderId, Order.OrderStatus.CANCELED);
 

@@ -42,5 +42,5 @@ public class Invoice {
     private Long orderId;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<InvoiceDetail> details = new ArrayList<>();
+    private List<Product> details = new ArrayList<>();
 }

@@ -11,7 +11,7 @@ import com.patomicroservicios.invoice_service.exceptions.InvoiceAlreadyExistsExc
 import com.patomicroservicios.invoice_service.exceptions.InvoiceNotFoundException;
 import com.patomicroservicios.invoice_service.exceptions.OrderNotFoundException;
 import com.patomicroservicios.invoice_service.model.Invoice;
-import com.patomicroservicios.invoice_service.model.InvoiceDetail;
+import com.patomicroservicios.invoice_service.model.Product;
 import com.patomicroservicios.invoice_service.repository.IInvoiceRepository;
 import com.patomicroservicios.invoice_service.repository.OrderAPI;
 import com.patomicroservicios.invoice_service.repository.UserAPI;
@@ -27,6 +27,7 @@ import com.itextpdf.layout.element.Table;
 import java.io.ByteArrayOutputStream;
 
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
@@ -69,23 +70,23 @@ public class InvoiceService implements IInvoiceService{
                 .orderId(orderId)
                 .build();
 
-        List<InvoiceDetail> details = mapToProductEntityList(order.getItems(), invoice);
+        List<Product> details = mapToProductEntityList(order.getItems(), invoice);
         invoice.setDetails(details);
 
         invoiceRepository.save(invoice); // cascade guarda invoice + details
     }
 
-    private List<InvoiceDetail> mapToProductEntityList(List<ProductDTO> productList, Invoice invoice) {
+    private List<Product> mapToProductEntityList(List<ProductDTO> productList, Invoice invoice) {
         return productList.stream()
                 .map(p -> {
-                    InvoiceDetail detail = modelMapper.map(p, InvoiceDetail.class);
+                    Product detail = modelMapper.map(p, Product.class);
                     detail.setInvoice(invoice);
                     return detail;
                 })
                 .toList();
     }
 
-    private List<ProductDTO> mapToProductDTOList(List<InvoiceDetail> productList){
+    private List<ProductDTO> mapToProductDTOList(List<Product> productList){
         return productList.stream()
                 .map(p->modelMapper.map(p,ProductDTO.class))
                 .toList();
@@ -135,7 +136,10 @@ public class InvoiceService implements IInvoiceService{
                 .setTextAlignment(TextAlignment.CENTER));
 
         document.add(new Paragraph("Número: " + invoice.getInvoiceNumber()).setFontSize(12));
-        document.add(new Paragraph("Fecha: " + invoice.getCreatedAt()).setFontSize(12));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        document.add(new Paragraph("Fecha: " + invoice.getCreatedAt().format(formatter)).setFontSize(12));
 
         // ✅ Datos del cliente
         document.add(new Paragraph("Cliente: " + user.getFirstName() + " " + user.getLastName()).setFontSize(12));
@@ -144,23 +148,37 @@ public class InvoiceService implements IInvoiceService{
         document.add(new Paragraph("\n"));
 
         // TABLA DE PRODUCTOS
-        Table table = new Table(UnitValue.createPercentArray(new float[]{3, 1, 2, 2}))
+        Table table = new Table(UnitValue.createPercentArray(new float[]{3, 2, 1, 2, 2}))
                 .useAllAvailableWidth();
 
-        // Encabezados con fondo gris
+// Encabezados con fondo gris
         table.addHeaderCell(new Cell().add(new Paragraph("Producto")).setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Marca")).setBackgroundColor(ColorConstants.LIGHT_GRAY));
         table.addHeaderCell(new Cell().add(new Paragraph("Cantidad")).setBackgroundColor(ColorConstants.LIGHT_GRAY));
         table.addHeaderCell(new Cell().add(new Paragraph("Precio Unitario")).setBackgroundColor(ColorConstants.LIGHT_GRAY));
         table.addHeaderCell(new Cell().add(new Paragraph("Subtotal")).setBackgroundColor(ColorConstants.LIGHT_GRAY));
 
-        for (InvoiceDetail d : invoice.getDetails()) {
-            table.addCell(new Cell().add(new Paragraph(d.getName())));
-            table.addCell(new Cell().add(new Paragraph(String.valueOf(d.getQuantity()))));
-            table.addCell(new Cell().add(new Paragraph(d.getUnitPrice().toString())));
-            table.addCell(new Cell().add(new Paragraph(d.getSubtotalPrice().toString())));
+        for (Product p : invoice.getDetails()) {
+            // Producto
+            table.addCell(new Cell().add(new Paragraph(p.getName())));
+
+            // Marca (null-safe)
+            table.addCell(new Cell().add(new Paragraph(
+                    p.getBrand() != null ? p.getBrand() : "N/A"
+            )));
+
+            // Cantidad
+            table.addCell(new Cell().add(new Paragraph(String.valueOf(p.getQuantity()))));
+
+            // Precio unitario
+            table.addCell(new Cell().add(new Paragraph(p.getUnitPrice().toString())));
+
+            // Subtotal
+            table.addCell(new Cell().add(new Paragraph(p.getSubtotalPrice().toString())));
         }
 
         document.add(table);
+
 
         // ESPACIO ANTES DE TOTALES
         document.add(new Paragraph("\n"));
@@ -175,7 +193,7 @@ public class InvoiceService implements IInvoiceService{
                 new Cell()
                         .add(new Paragraph(
                                 invoice.getDetails().stream()
-                                        .map(InvoiceDetail::getSubtotalPrice)
+                                        .map(Product::getSubtotalPrice)
                                         .reduce(BigDecimal.ZERO, BigDecimal::add)
                                         .toString()
                         ))

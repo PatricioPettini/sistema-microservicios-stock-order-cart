@@ -14,8 +14,7 @@ import java.math.BigDecimal;
 public class ProductGetDTO {
     private Long productId;
     private String name;
-    private BrandGetDTO brand;
-    private CategoryGetDTO category;
+    private String brand;
     private BigDecimal unitPrice;
     private int quantity;
     private String state;

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.patomicroservicios.config_server.ConfigServerApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.073 s -- in com.patomicroservicios.config_server.ConfigServerApplicationTests

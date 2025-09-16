@@ -11,7 +11,7 @@ public class WebClientConfig {
 
     @Bean
     public WebClient keycloakWebClient(
-            @Value("${keycloak.server-url:http://localhost:8181}") String serverUrl
+            @Value("${keycloak.server-url}") String serverUrl
     ) {
         return WebClient.builder()
                 .baseUrl(serverUrl)

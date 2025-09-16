@@ -121,14 +121,18 @@ public class ProductService implements IProductService {
     }
 
     private ProductGetDTO toDto(Product product) {
-        return modelMapper.map(product, ProductGetDTO.class);
+        ProductGetDTO dto = modelMapper.map(product, ProductGetDTO.class);
+        dto.setBrand(product.getBrand().getName());
+        dto.setCategory(product.getCategory().getName());
+        return dto;
     }
 
     @Override
     @CircuitBreaker(name = "default", fallbackMethod = "fallbackProductNotFound")
     @Retry(name = "retryGetProductDTO")
     public ProductGetDTO getProductDTO(Long productId){
-        return toDto(getProduct(productId));
+        Product product=getProduct(productId);
+        return toDto(product);
     }
 
     // update some product fields

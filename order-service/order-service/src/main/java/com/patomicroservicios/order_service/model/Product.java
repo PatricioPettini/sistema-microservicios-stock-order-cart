@@ -1,7 +1,6 @@
 package com.patomicroservicios.order_service.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -27,6 +26,10 @@ public class Product {
     @Min(1)
     @Column(nullable = false)
     private int quantity;
+
+    @NotNull
+    @Column(nullable = false)
+    private String brand;
 
     @NotNull
     @Column(nullable = false)

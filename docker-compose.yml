@@ -1,42 +1,5 @@
 version: '3'
 services:
-  carrito-service:
-    container_name: carrito-service
-    image: mysql:8.0.33
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: carrito-service
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - 3312:3306   # puerto externo 3307 -> interno 3306
-
-  productos-service:
-    container_name: productos-service
-    image: mysql:8.0.33
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: productos-service
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - 3308:3306   # puerto externo 3308 -> interno 3306
-
-  stock-service:
-    container_name: stock-service
-    image: mysql:8.0.33
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: stock-service
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-
-    ports:
-      - 3309:3306   # puerto externo 3309 -> interno 3306
-
   ### MySQL database for Keycloak
   db-keycloak:
     container_name: db-keycloak

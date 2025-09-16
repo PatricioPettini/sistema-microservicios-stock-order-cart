@@ -2,6 +2,7 @@ com\patomicroservicios\stock_service\exceptions\StockNotRegisteredException.clas
 com\patomicroservicios\stock_service\dto\response\StockGetDTO.class
 com\patomicroservicios\stock_service\repository\IStockRepository.class
 com\patomicroservicios\stock_service\dto\response\CategoryGetDTO.class
+com\patomicroservicios\stock_service\config\FeignClientConfig.class
 com\patomicroservicios\stock_service\config\SecurityConfig.class
 com\patomicroservicios\stock_service\exceptions\ApiError.class
 com\patomicroservicios\stock_service\exceptions\StockAlreadyRegisteredException.class
@@ -15,6 +16,7 @@ com\patomicroservicios\stock_service\model\Stock.class
 com\patomicroservicios\stock_service\service\StockService.class
 com\patomicroservicios\stock_service\config\MapperConfig.class
 com\patomicroservicios\stock_service\dto\request\StockCreateDTO.class
+com\patomicroservicios\stock_service\auth\KeycloakTokenService.class
 com\patomicroservicios\stock_service\exceptions\GlobalExceptionHandler.class
 com\patomicroservicios\stock_service\StockServiceApplication.class
 com\patomicroservicios\stock_service\producer\NotificationProducer.class
@@ -23,5 +25,6 @@ com\patomicroservicios\stock_service\controller\StockController.class
 com\patomicroservicios\stock_service\exceptions\InsufficientStockException.class
 com\patomicroservicios\stock_service\model\Stock$StockBuilder.class
 com\patomicroservicios\stock_service\exceptions\ProductNotFoundException.class
+com\patomicroservicios\stock_service\config\KeycloakRealmRoleConverter.class
 com\patomicroservicios\stock_service\config\RabbitMQConfig.class
 com\patomicroservicios\stock_service\dto\request\ProductQuantityDTO$ProductQuantityDTOBuilder.class
