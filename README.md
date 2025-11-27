@@ -3,7 +3,7 @@
 Este proyecto es un sistema de retail basado en microservicios, desarrollado como desafío personal, que simula la operación de una tienda:
 gestión de productos, stock, carrito de compras, facturación y notificaciones.
 
-El objetivo principal fue aplicar y consolidar conocimientos en arquitecturas distribuidas, mensajería asíncrona, autenticación centralizada y CI/CD automatizado.
+El objetivo principal fue aplicar y consolidar conocimientos en arquitecturas distribuidas, mensajería asíncrona y autenticación centralizada.
 
 
 ⚙️ Arquitectura general
